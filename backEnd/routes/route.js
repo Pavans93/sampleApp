@@ -13,7 +13,7 @@ router.delete('/user/:id', (req, res, next) => {
 
     User.remove({ _id: req.params.id }, function (err, result) {
         if (err) {
-            res.json({ msg: 'Error while deleting User' });
+            res.status(400).json({ msg: 'Error while deleting User' });
         } else {
             res.json({ msg: 'User deleted Successfully' });
         }
@@ -39,12 +39,12 @@ router.post('/signup', (req, res, next) => {
             console.log(err.errmsg);
             if (err.code == 11000) {
                 if (err.errmsg.indexOf('email') >= 0) {
-                    res.json({ msg: 'email already exist!' });
+                    res.status(400).json({ msg: 'email already exist!' });
                 } else if (err.errmsg.indexOf('mobile') >= 0) {
-                    res.json({ msg: 'mobile no already exist!' });
+                    res.status(400).json({ msg: 'mobile no already exist!' });
                 }
             } else {
-                res.json({ msg: 'Failed to Create User' });
+                res.status(400).json({ msg: 'Failed to Create User' });
             }
         }
         else { res.json({ msg: 'User Create Successfully' }) }
@@ -56,12 +56,12 @@ router.post('/signup', (req, res, next) => {
 router.post('/login', (req, res, next) => {
     User.find({ 'email': req.body.email }, function (err, result) {
         if (err) {
-            res.json({ msg: 'Error While Fetching User' })
+            res.status(400).json({ msg: 'Error While Fetching User' })
         } else {
             if (result[0].password === req.body.password) {
                 res.json({ result })
             } else {
-                res.json({ msg: 'UserName And Password Missmatch' })
+                res.status(400).json({ msg: 'UserName And Password Missmatch' })
             }
 
         }
